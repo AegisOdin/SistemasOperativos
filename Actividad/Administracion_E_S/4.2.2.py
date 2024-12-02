@@ -1,0 +1,78 @@
+import threading
+import time
+import random
+
+#Escribe un programa que utilice el manejo de interrupciones en un sistema básico de simulación. 
+
+
+class Interrupcion:
+    """Clase que simula una interrupción."""
+    
+    def __init__(self, tipo, mensaje):
+        self.tipo = tipo
+        self.mensaje = mensaje
+
+class ManejadorDeInterrupciones:
+    """Manejador que procesa las interrupciones."""
+    
+    def __init__(self):
+        self.interrupciones = []
+        self.lock = threading.Lock()
+    
+    def generar_interrupcion(self, tipo, mensaje):
+        """Genera una nueva interrupción."""
+        interrupcion = Interrupcion(tipo, mensaje)
+        with self.lock:
+            self.interrupciones.append(interrupcion)
+        print(f"Interrupción generada: {mensaje}")
+    
+    def atender_interrupciones(self):
+        """Maneja las interrupciones que se han generado."""
+        while True:
+            with self.lock:
+                if self.interrupciones:
+                    interrupcion = self.interrupciones.pop(0)
+                    print(f"Atendiendo interrupción: {interrupcion.mensaje}")
+                    time.sleep(1)  
+                else:
+                    time.sleep(0.1)
+
+class Sistema:
+    """Simula el sistema de ejecución normal que puede ser interrumpido."""
+    
+    def __init__(self, manejador):
+        self.manejador = manejador
+        self.ejecutando = True
+    
+    def ejecutar(self):
+        """Simula la ejecución del sistema, interrumpida por eventos."""
+        while self.ejecutando:
+            print("Sistema en ejecución... esperando eventos.")
+            time.sleep(2)
+            if random.random() < 0.3:  # Probabilidad de que se genere una interrupción
+                tipo = random.choice(['E/S', 'Error', 'Alerta'])
+                mensaje = f"Evento de tipo {tipo}"
+                self.manejador.generar_interrupcion(tipo, mensaje)
+
+    def detener(self):
+        """Detiene el sistema (simulando el fin de la ejecución)."""
+        self.ejecutando = False
+        print("Sistema detenido.")
+        
+        
+def simular_sistema():
+    manejador = ManejadorDeInterrupciones()
+    sistema = Sistema(manejador)
+    sistema_thread = threading.Thread(target=sistema.ejecutar)
+    interrupciones_thread = threading.Thread(target=manejador.atender_interrupciones)
+    
+    sistema_thread.start()
+    interrupciones_thread.start()
+    
+    time.sleep(5)
+    sistema.detener()
+    sistema_thread.join()
+    interrupciones_thread.join()
+
+if __name__ == "__main__":
+    simular_sistema()

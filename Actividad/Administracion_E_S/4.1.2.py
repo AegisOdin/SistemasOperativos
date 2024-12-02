@@ -1,0 +1,63 @@
+import time
+import queue
+
+
+# Diseña un programa que implemente un manejador de dispositivos sencillo para un dispositivo virtual de entrada. en python
+
+class DispositivoEntrada:
+    """Clase que simula un dispositivo de entrada (ejemplo: teclado)."""
+    
+    def __init__(self):
+        # Cola que almacena las teclas "presionadas"
+        self.teclas_presionadas = queue.Queue()
+    
+    def escribir_dato(self, dato):
+        """Simula la escritura de un dato (tecla presionada) en el dispositivo."""
+        self.teclas_presionadas.put(dato)
+        print(f"Tecla '{dato}' escrita en el dispositivo.")
+    
+    def leer_dato(self):
+        """Simula la lectura de un dato (tecla presionada) desde el dispositivo."""
+        if not self.teclas_presionadas.empty():
+            return self.teclas_presionadas.get()
+        else:
+            return None
+
+class ManejadorDeDispositivos:
+    """Clase que maneja las operaciones de E/S con dispositivos de entrada."""
+    
+    def __init__(self, dispositivo):
+        self.dispositivo = dispositivo
+    
+    def leer_entrada(self):
+        """Lee un dato desde el dispositivo de entrada."""
+        dato = self.dispositivo.leer_dato()
+        if dato:
+            print(f"Lectura de entrada: {dato}")
+        else:
+            print("No hay datos disponibles para leer.")
+    
+    def escribir_entrada(self, dato):
+        """Escribe un dato en el dispositivo de entrada."""
+        self.dispositivo.escribir_dato(dato)
+
+def simular_interaccion():
+    # Creamos el dispositivo virtual de entrada (teclado)
+    dispositivo = DispositivoEntrada()
+    manejador = ManejadorDeDispositivos(dispositivo)
+    manejador.escribir_entrada('A')
+    manejador.escribir_entrada('B')
+    manejador.escribir_entrada('C')
+    
+    time.sleep(1)
+    
+    # Simulamos la lectura de datos del dispositivo
+    manejador.leer_entrada()  
+    manejador.leer_entrada()  
+    manejador.leer_entrada() 
+    
+    # Intentamos leer cuando no hay más datos
+    manejador.leer_entrada()
+
+if __name__ == "__main__":
+    simular_interaccion()
