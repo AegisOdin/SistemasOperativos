@@ -1,0 +1,48 @@
+from collections import deque
+
+#Escribe un código que implemente el algoritmo de reemplazo de página "Least Recently Used" (LRU).
+
+class LRUCache:
+    def __init__(self, capacidad):
+        self.capacidad = capacidad
+        self.cache = {} 
+        self.orden = deque() 
+    
+    def acceder_pagina(self, pagina):
+        """Simula el acceso a una página."""
+        if pagina in self.cache:
+            self.orden.remove(pagina)
+            self.orden.append(pagina)
+            print(f"Accediendo a la página {pagina} (ya está en la cache).")
+        else:
+            if len(self.cache) >= self.capacidad:
+                pagina_reemplazada = self.orden.popleft()  
+                del self.cache[pagina_reemplazada]  
+                print(f"Reemplazando la página {pagina_reemplazada} por la nueva página {pagina}.")
+            self.cache[pagina] = True
+            self.orden.append(pagina)
+            print(f"Página {pagina} añadida a la cache.")
+    
+    def mostrar_cache(self):
+        """Muestra el estado actual de la cache."""
+        print("\nEstado actual de la cache:")
+        print("Páginas en la cache:", list(self.orden))
+
+
+capacidad_cache = 3
+
+cache_lru = LRUCache(capacidad_cache)
+
+cache_lru.acceder_pagina(1)  
+cache_lru.acceder_pagina(2)  
+cache_lru.acceder_pagina(3)  
+cache_lru.mostrar_cache()  
+
+cache_lru.acceder_pagina(4) 
+cache_lru.mostrar_cache()
+
+cache_lru.acceder_pagina(2)  
+cache_lru.mostrar_cache()
+
+cache_lru.acceder_pagina(5)  
+cache_lru.mostrar_cache()

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagrama de Traducción de Direcciones Virtuales a Físicas</title>
+    <style>
+        .box {
+            fill: #f0f0f0;
+            stroke: #333;
+            stroke-width: 2;
+        }
+
+        .text {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            fill: #333;
+        }
+
+        .arrow {
+            fill: none;
+            stroke: #333;
+            stroke-width: 2;
+        }
+
+        .highlight {
+            fill: #ffcc00;
+        }
+
+        .title {
+            font-family: Arial, sans-serif;
+            font-size: 18px;
+            font-weight: bold;
+            fill: #000;
+        }
+    </style>
+</head>
+<body>
+    <h2>Diagrama de Traducción de Direcciones Virtuales a Físicas</h2>
+    <svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+        <!-- Título del diagrama -->
+        <text x="300" y="30" class="title">Proceso de Traducción de Direcciones Virtuales a Físicas</text>
+
+        <!-- Memoria Virtual -->
+        <rect x="50" y="100" width="200" height="150" class="box"/>
+        <text x="125" y="160" class="text">Memoria Virtual</text>
+        <text x="125" y="180" class="text">(Dirección Virtual)</text>
+
+        <!-- Tabla de Páginas -->
+        <rect x="300" y="100" width="200" height="150" class="box"/>
+        <text x="375" y="160" class="text">Tabla de Páginas</text>
+        <text x="375" y="180" class="text">(Dirección Virtual -> Marco)</text>
+
+        <!-- Memoria Física -->
+        <rect x="550" y="100" width="200" height="150" class="box"/>
+        <text x="625" y="160" class="text">Memoria Física</text>
+        <text x="625" y="180" class="text">(Dirección Física)</text>
+
+        <!-- Flechas de conexión -->
+        <line x1="250" y1="150" x2="300" y2="150" class="arrow"/>
+        <line x1="500" y1="150" x2="550" y2="150" class="arrow"/>
+
+        <!-- Explicación -->
+        <text x="50" y="300" class="text">1. La CPU genera una dirección virtual.</text>
+        <text x="50" y="320" class="text">2. Se busca en la Tabla de Páginas la correspondencia de la dirección virtual.</text>
+        <text x="50" y="340" class="text">3. Si la página está en memoria, se obtiene la dirección física.</text>
+        <text x="50" y="360" class="text">4. La dirección física es usada para acceder a la memoria.</text>
+
+        <!-- Dirección Virtual -->
+        <rect x="50" y="400" width="200" height="50" class="box highlight"/>
+        <text x="125" y="430" class="text">Dirección Virtual</text>
+
+        <!-- Dirección Física -->
+        <rect x="550" y="400" width="200" height="50" class="box highlight"/>
+        <text x="625" y="430" class="text">Dirección Física</text>
+
+        <!-- Flecha de dirección -->
+        <line x1="250" y1="425" x2="300" y2="425" class="arrow"/>
+        <line x1="500" y1="425" x2="550" y2="425" class="arrow"/>
+    </svg>
+</body>
+</html>
